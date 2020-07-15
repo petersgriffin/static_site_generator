@@ -1,0 +1,5 @@
+#!/bin/bash
+
+BUCKET=$1
+
+aws s3 sync output/$BUCKET s3://$BUCKET/ --exclude .DS_Store --delete

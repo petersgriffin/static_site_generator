@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+	{% include "navigation_tree.html" %}
+{% endblock %}
+
+{% block content %}
+<div id="{{ 'standalone_content' if print_version else 'content'}}">
+<div id="byline">
+<h3>Date Index for {{ month_name }}, {{ year }}</h3>
+</div>
+	<div class="main_body">
+{% for page_id in page_ids -%}
+	{% if loop.first -%}
+	<a href="../dates{{ '.html' if site['append_html'] else '' }}">All months from {{ year }}</a><br/>
+		<ul>
+	{% endif -%}
+			<li>({{ site['pages'][page_id]['date'].strftime("%Y-%M-%d") }}) <a href="../{{ page_id }}{{ '.html' if site['append_html'] else '' }}">{{ site['pages'][page_id]['title'] }}</a></li>
+	{% if loop.last -%}
+		</ul>
+	{% endif -%}
+{%- endfor -%}
+	</div>
+</div>
+{% endblock %}

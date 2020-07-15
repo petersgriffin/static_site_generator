@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+	{% include "navigation_tree.html" %}
+{% endblock %}
+
+{% block content %}
+<div id="{{ 'standalone_content' if print_version else 'content'}}">
+	<div id="byline">
+<h3><a href="../tags.html">Tags</a> > {{ tag }}</h3>
+	</div>
+	<div class="main_body">
+{% for page_id, page in site['pages'].items() if tag in page['tags'] -%}
+	{% if loop.first -%}
+		<ul>
+	{% endif -%}
+			<li><a href="../{{ page['page_id'] }}.html">{{ page['title'] }}</a></li>
+	{% if loop.last -%}
+		</ul>
+	{% endif -%}
+{%- endfor -%}
+	</div>
+</div>
+{% endblock %}

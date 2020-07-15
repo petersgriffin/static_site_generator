@@ -1,0 +1,13 @@
+{% block breadcrumbs %}
+<div id="breadcrumbs" class="color_border">
+    <a href="{{ relpath(page, site['pages']['index']) }}{{ 'index.html' if site['append_html'] else '' }}">~</a>
+    {% if not page['page_id'] == 'index' %}
+    {% for apid in page['ancestors'] -%}
+        {% if apid != 'index' -%}
+            / <a href="{{ relpath(page, site['pages'][apid]) }}{{ site['pages'][apid]['filename'] }}{{ '.html' if site['append_html'] else '' }}">{{ site['pages'][apid]['title'] }}</a>
+        {% endif %}
+    {% endfor -%}
+    / _
+    {% endif %}
+</div>
+{% endblock %}

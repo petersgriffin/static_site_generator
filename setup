@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mkdir -p log
+
+mkdir -p ~/venvs
+
+python3 -m venv ~/venvs/pp3ssg
+source ~/venvs/pp3ssg/bin/activate
+pip install --require-hashes -r requirements.txt

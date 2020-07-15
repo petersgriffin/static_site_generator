@@ -1,0 +1,34 @@
+{% block navigation %}
+<div id="navigation" class="color_border gradient_background">
+   <ul class="top_list">
+{%- for pid in site['pages']['index']['children'] recursive %}
+      <li><a href="{{ relpath(page, site['pages'][pid]) }}{{ site['pages'][pid]['filename'] }}{{ '.html' if site['append_html'] else '' }}">{{ site['pages'][pid]['title'] }}</a>
+         {%- if site['pages'][pid].children -%}
+            <span class="child_count"> ({{site['pages'][pid]['children']|length}})</span>
+         {%- endif -%}
+      </li>
+   {%- if site['pages'][pid].children -%}
+      {% if pid == page['page_id'] or pid in page['ancestors'] -%}
+         {% if loop.depth == 1 %}
+         <ul class="second_list">
+         {% else %}
+         <ul>
+         {% endif %}
+            {{ loop(site['pages'][pid].children) }}
+         </ul>
+      {% endif -%}
+   {%- endif %}
+{%- endfor %}
+   </ul>
+   <br/>
+   <br/>
+   <span id="date_tag_index_links">
+      {%- if site['date_hierarchy'].items()|length > 0 %}
+         <a href="{{ relpath(page, site['pages']['index']) }}dates{{ '.html' if site['append_html'] else '' }}">Date Index</a><br/>
+      {% endif %}
+      {%- if site['tags']|length > 0 %}
+         <a href="{{ relpath(page, site['pages']['index']) }}tags{{ '.html' if site['append_html'] else '' }}">Tag Index</a>
+      {% endif %}
+   </span>
+</div>
+{% endblock %}

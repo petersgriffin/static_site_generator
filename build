@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SITE_NAME=$1
+
+source ~/venvs/pp3ssg/bin/activate
+
+if [ ! -d "site_data/${SITE_NAME}" ]; then
+    echo "ERROR: site data folder for ${SITE_NAME} not found"
+    exit 1;
+fi	
+
+rm -r output/$SITE_NAME
+
+python generate.py site_data/$SITE_NAME output -v -a

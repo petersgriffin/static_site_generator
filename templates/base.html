@@ -1,0 +1,57 @@
+{%- macro relpath(current, target) -%}
+    {% if target['depth'] < current['depth'] -%}
+        {%- for i in range(0, (current['depth'] - target['depth'])) -%}
+../
+        {%- endfor -%}
+    {% else -%}
+        {%- for a in target['ancestors'] -%}     
+            {% if a not in current['ancestors'] and a != 'index' -%}
+{{ site['pages'][a]['filename'] }}/
+            {%- endif -%}
+        {%- endfor -%}
+    {% endif -%}
+{%- endmacro -%}
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        {% if page['page_id'] == 'index' %}
+        <title> {{ site['name'] }}</title>
+        {% else %}
+        <title> {{ site['name'] }} | {{ page['title'] }}</title>
+        {% endif %}
+
+        <link rel="stylesheet" href="{{ relpath(page, site['pages']['index']) }}static/style.css">
+
+        <!-- <link rel="apple-touch-icon" href="icon.png"> -->
+        <!-- Place favicon.ico in the root directory -->
+    </head>
+    <body class="gradient_background">
+        <div id="titlebar" class="color_border gradient_background">
+        <h2><a href="{{ relpath(page, site['pages']['index']) }}{{ 'index.html' if site['append_html'] else '' }}">{{ site['pages']['index']['title'] }}</a></h2>
+        </div>
+
+        {% if not print_version %}
+            {% block navigation %}
+                {% include "navigation_tree.html" %}
+            {% endblock %}
+            <div id="move_right_for_nav">
+                {% block breadcrumbs %}
+                    {% include "breadcrumbs.html" %}
+                {% endblock %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+        
+        {% if not print_version %}
+            </div>
+        {% endif %}
+
+        </div>
+        <div id="footer" class="color_border">
+            Site footer including year: 2020
+        </div>
+    </body>
+</html>

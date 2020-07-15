@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+	{% include "navigation_tree.html" %}
+{% endblock %}
+
+{% block content %}
+<div id="{{ 'standalone_content' if print_version else 'content'}}">
+	<div id="byline">
+<h3>Tags in {{ site['pages']['index']['title'] }}</h3></div>
+	<div class="main_body">
+		<ul>
+	{% for tag in site['tags'] -%}
+			<li><a href="tags/{{ tag }}{{ '.html' if site['append_html'] else '' }}">{{ tag }}</a> <span class="tag_count"> ({{ site['tags'][tag]|length }})</span></li>
+	{%- endfor -%}
+		</ul>
+	</div>
+	</div>
+{% endblock %}
