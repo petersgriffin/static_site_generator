@@ -7,7 +7,7 @@ source ~/venvs/pp3ssg/bin/activate
 if [ ! -d "site_data/${SITE_NAME}" ]; then
     echo "ERROR: site data folder for ${SITE_NAME} not found"
     exit 1;
-fi	
+fi
 
 rm -r output/$SITE_NAME
 

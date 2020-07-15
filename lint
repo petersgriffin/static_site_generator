@@ -3,5 +3,5 @@
 source ~/venvs/pp3ssg/bin/activate
 
 pycodestyle generate.py --show-source \
-					    --max-line-length=80 \
-					    --ignore=None
+                        --max-line-length=80 \
+                        --ignore=None

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block navigation %}
-	{% include "navigation_tree.html" %}
+    {% include "navigation_tree.html" %}
 {% endblock %}
 
 {% block content %}
@@ -9,16 +9,16 @@
 <div id="byline">
 <h3>Pages by year and month</h3>
 </div>
-	<div class="main_body">
-	{% for y in site['date_hierarchy'].keys() -%}
-		<h4>{{ y }}</h4>
-		<ul>
-			{% for m in site['date_hierarchy'][y] -%}
-				<li><a href="{{ y }}/{{ m }}{{ '.html' if site['append_html'] else '' }}">{{ site['months'][m|int - 1] }}</a>
-				<span class="date_count"> ({{ site['date_hierarchy'][y][m]|length }})</span></li>
+    <div class="main_body">
+    {% for y in site['date_hierarchy'].keys() -%}
+        <h4>{{ y }}</h4>
+        <ul>
+            {% for m in site['date_hierarchy'][y] -%}
+                <li><a href="{{ y }}/{{ m }}{{ '.html' if site['append_html'] else '' }}">{{ site['months'][m|int - 1] }}</a>
+                <span class="date_count"> ({{ site['date_hierarchy'][y][m]|length }})</span></li>
             {%- endfor -%}
          </ul>
-	{%- endfor -%}
-	</div>
+    {%- endfor -%}
+    </div>
 </div>
 {% endblock %}
