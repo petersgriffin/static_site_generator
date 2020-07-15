@@ -322,6 +322,7 @@ internal 'page_id':
    - site_data/example.com/index.html           = index
    - site_data/example.com/news.html            = news
    -    output/example.com/news/2019/10_06.html = news/2019/10_06
+   -   https://example.com/news/2019/10_06.html  <--- published URL
 
 Requires one index.html at site root, with no others permitted."""
 
