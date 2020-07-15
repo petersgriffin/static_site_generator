@@ -238,7 +238,8 @@ def render_html(site, output_path, dry_run):
         write_to_file(f"{output_path}/{page['page_id']}_print.html", html)
 
     # tag aggregation page
-    os.makedirs(f'{output_path}/tags', exist_ok=True)
+    if not dry_run:
+        os.makedirs(f'{output_path}/tags', exist_ok=True)
     jtmp = jinja_env.get_template('tag_list.html')
     html = jtmp.render(site=site,
                        page={'title': 'tags',
@@ -257,8 +258,8 @@ def render_html(site, output_path, dry_run):
 
     # year-month date indices, if any pages are dated
     if len(site['date_hierarchy'].items()) > 0:
-
-        os.makedirs(f'{output_path}/date', exist_ok=True)
+        if not dry_run:
+            os.makedirs(f'{output_path}/date', exist_ok=True)
         jtmp = jinja_env.get_template('month_list.html')
         html = jtmp.render(site=site,
                            page={'title': 'Date Index',
@@ -269,8 +270,8 @@ def render_html(site, output_path, dry_run):
         for y in site['date_hierarchy'].keys():
             for m in site['date_hierarchy'][y]:
                 page_ids = site['date_hierarchy'][y][m]
-
-                os.makedirs(f'{output_path}/{y}', exist_ok=True)
+                if not dry_run:
+                    os.makedirs(f'{output_path}/{y}', exist_ok=True)
                 jtmp = jinja_env.get_template('month.html')
                 html = jtmp.render(site=site, month=m, year=y,
                                    page_ids=page_ids,
