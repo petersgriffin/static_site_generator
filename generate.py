@@ -30,6 +30,10 @@ def load_site_data(start_dir):
     def recursively_load_subdirs(current_dir):
         with os.scandir(current_dir) as dir_ierator:
             for path_item in dir_ierator:
+                if path_item.name == 'skip_rendering':
+                    return
+        with os.scandir(current_dir) as dir_ierator:
+            for path_item in dir_ierator:
                 if path_item.name.endswith('.html') and path_item.is_file():
                     page = process_page_file(path_item.path, start_dir)
                     site['pages'][page['page_id']] = page
