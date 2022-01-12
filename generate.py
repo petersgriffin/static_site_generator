@@ -88,7 +88,7 @@ def process_page_file(path, start_dir):
         logger.error(f'Split Sequence "{split_on}"" missing from file {path}')
         raise ValueError
 
-    splitted = file_string.split(config['main']['split_sequence'], maxsplit=1)
+    splitted = file_string.split(split_on, maxsplit=1)
     metadata_section = splitted[0]
     html_section = splitted[1]
 
