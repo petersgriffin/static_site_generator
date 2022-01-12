@@ -214,8 +214,6 @@ def render_html(site, output_path, dry_run):
     jinja_env = Environment(loader=loader,
                             autoescape=select_autoescape(['xml']))
 
-    assert(len(site['pages'].keys()) > 0)
-
     def write_to_file(target_path, html_string):
         if dry_run:
             logger.warning(f'No-write test for {target_path}...')
