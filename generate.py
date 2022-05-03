@@ -85,7 +85,7 @@ def process_page_file(path, start_dir):
 
     split_on = config['main']['split_sequence']
     if split_on not in file_string:
-        logger.error(f'Split Sequence "{split_on}"" missing from file {path}')
+        logger.error(f'Split Sequence "{split_on}" missing from file {path}')
         raise ValueError
 
     splitted = file_string.split(split_on, maxsplit=1)
