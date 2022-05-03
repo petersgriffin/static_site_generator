@@ -120,6 +120,7 @@ def process_page_file(path, start_dir):
 def interlink_pages_for_navigation(site):
     """ Adds page relationship metadata to the site-dict, and returns it. """
     for page_id, page in site['pages'].items():
+        logger.debug(f"Interlinking {page_id}")
         if not page['parent']:
             continue
         parent_page = site['pages'][page['parent']]
@@ -153,11 +154,14 @@ def interlink_pages_for_navigation(site):
 
         page['ancestors'] = get_ancestors(page_id, [])
         page['ancestors'].reverse()
-        assert(page['ancestors'][0] == 'index' or page_id == 'index')
 
         logger.debug(f"ancestors: {page['ancestors']}")
-        logger.debug(f"children: {page['children']}")
-        logger.debug(f"siblings: {page['siblings']}")
+        logger.debug(f"children:  {page['children']}")
+        logger.debug(f"siblings:  {page['siblings']}")
+
+        if not (page['ancestors'][0] == 'index' or page_id == 'index'):
+            logger.error(f"{page_id}, or its ultimate ancestor is not 'index'")
+            raise ValueError
 
 
 def sort_pages_for_navigation(site):
