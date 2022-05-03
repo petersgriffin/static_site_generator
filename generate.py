@@ -88,14 +88,11 @@ def process_page_file(path, start_dir):
         logger.error(f'Split Sequence "{split_on}" missing from file {path}')
         raise ValueError
 
-    splitted = file_string.split(split_on, maxsplit=1)
-    metadata_section = splitted[0]
-    html_section = splitted[1]
+    metadata_section, html_section = file_string.split(split_on, maxsplit=1)
 
     for line in metadata_section.splitlines():
-        split_field = line.split(':', maxsplit=1)
-        field_name = split_field[0]
-        field_value = split_field[1].strip()
+        field_name, field_value = line.split(':', maxsplit=1)
+        field_value = field_value.strip()
 
         if field_name == 'tags':
             page['tags'] = [t.strip().replace(' ', '_').lower() for t in field_value.split(',') if len(t) > 0]
@@ -165,8 +162,7 @@ def interlink_pages_for_navigation(site):
 
 
 def sort_pages_for_navigation(site):
-    """
-        Pages default to alphabetical sort on title in the nav lists. Author
+    """ Pages default to alphabetical sort on title in the nav lists. Author
         can add an 'order' integer to the source page, low positive values to
         force to the top of the list, with negative order counting from the end
         e.g. order: -2 is penultimate position and order: 4 is 4th listing.
@@ -228,49 +224,47 @@ def render_html(site, output_path, dry_run):
             f.write(str(html_string))
 
     # 404 / error pages
-    jtmp = jinja_env.get_template('error.html')
-    html = jtmp.render(site=site, page={'title': 'Error of some kind',
-                                        'depth': 0,
-                                        'page_id': 'error'})
+    html = jinja_env.get_template('error.html').render(
+        site=site, page={'title': 'Error of some kind',
+                         'depth': 0,
+                         'page_id': 'error'})
     write_to_file(f"{output_path}/error.html", html)
 
     # regular pages, from the source files
     for page_id, page in site['pages'].items():
-        jtmp = jinja_env.get_template('post.html')
-        html = jtmp.render(page=page, site=site)
+        html = jinja_env.get_template('post.html').render(
+            page=page, site=site)
         write_to_file(f"{output_path}/{page['page_id']}.html", html)
 
-        html = jtmp.render(page=page, site=site, print_version=True)
+        html = jinja_env.get_template('post.html').render(
+            page=page, site=site, print_version=True)
         write_to_file(f"{output_path}/{page['page_id']}_print.html", html)
 
     # tag aggregation page
     if not dry_run:
         os.makedirs(f'{output_path}/tags', exist_ok=True)
-    jtmp = jinja_env.get_template('tag_list.html')
-    html = jtmp.render(site=site,
-                       page={'title': 'tags',
-                             'depth': 0,
-                             'page_id': 'tags'})
+    html = jinja_env.get_template('tag_list.html').render(
+        site=site, page={'title': 'tags',
+                         'depth': 0,
+                         'page_id': 'tags'})
     write_to_file(f'{output_path}/tags.html', html)
 
     # a page for each individual tag
     for t in site['tags']:
-        jtmp = jinja_env.get_template('tag.html')
-        html = jtmp.render(tag=t, site=site,
-                           page={'title': t,
-                                 'depth': 1,
-                                 'page_id': f'tags/{{t}}'})
+        html = jinja_env.get_template('tag.html').render(
+            tag=t, site=site, page={'title': t,
+                                    'depth': 1,
+                                    'page_id': f'tags/{{t}}'})
         write_to_file(f'{output_path}/tags/{t}.html', html)
 
     # year-month date indices, if any pages are dated
     if len(site['date_hierarchy'].items()) > 0:
         if not dry_run:
             os.makedirs(f'{output_path}/date', exist_ok=True)
-        jtmp = jinja_env.get_template('month_list.html')
-        html = jtmp.render(site=site,
-                           page={'title': 'Date Index',
-                                 'depth': 0,
-                                 'page_id': 'date'})
+        html = jinja_env.get_template('month_list.html').render(
+            site=site, page={'title': 'Date Index',
+                             'depth': 0,
+                             'page_id': 'date'})
         write_to_file(f'{output_path}/dates.html', html)
 
         for y in site['date_hierarchy'].keys():
@@ -278,13 +272,12 @@ def render_html(site, output_path, dry_run):
                 page_ids = site['date_hierarchy'][y][m]
                 if not dry_run:
                     os.makedirs(f'{output_path}/{y}', exist_ok=True)
-                jtmp = jinja_env.get_template('month.html')
-                html = jtmp.render(site=site, month=m, year=y,
-                                   page_ids=page_ids,
-                                   month_name=site['months'][int(m) - 1],
-                                   page={'title': f'{m}, {y}',
-                                         'depth': 1,
-                                         'page_id': f'{y}/{m}'})
+                html = jinja_env.get_template('month.html').render(
+                    site=site, month=m, year=y, page_ids=page_ids,
+                    month_name=site['months'][int(m) - 1],
+                    page={'title': f'{m}, {y}',
+                          'depth': 1,
+                          'page_id': f'{y}/{m}'})
                 write_to_file(f'{output_path}/{y}/{m}.html', html)
 
 
