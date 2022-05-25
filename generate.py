@@ -309,21 +309,43 @@ def main():
     parser.description = """
 Processes a directory tree of custom-format text files into a static website.
 
-Source directory recursively copied to output directory, including images and
-other static files.
+Processes a directory tree of text files into a static website. Source directory
+contents copied to output directory, so static files can be referenced in source
+files.
 
-Source files (those ending in .html) contain a metadata header, a delimeter
-sequence, and the rest of the file is for the custom page HTML, including
+Source files (those ending in .html) contain a metadata header, a configurable
+delimeter sequence, and the rest of the file is for the custom page HTML and
 convenience macros.
+
+Example:
+
+title: Example Page
+tags: comma list, of, tags
+date: 2022-12-12
+arbitrary_field: value_available_in_template
+====
+<div>
+Freehand HTML goes here, {{link("https://example.com/", "Example convenience
+macro")}} (for when plain HTML takes too long to write)
+</div>
+
+End Example.
+
+Prioritizes ease of adding new text files quickly, at the expense of the URLs
+retaining the .html extension when hosted without URL rewriting.
 
 Final site navigation / URL hierarchy maps to source directory structure and
 internal 'page_id':
-   - site_data/example.com/index.html           = index
-   - site_data/example.com/news.html            = news
-   -    output/example.com/news/2019/10_06.html = news/2019/10_06
-   -   https://example.com/news/2019/10_06.html  <--- published URL
+   - site_data/example.com/index.html                 = index
+   - site_data/example.com/news.html                  = news
+   -    output/example.com/news/current/national.html = news/current/national
+   -   https://example.com/news/current/national.html  <--- published URL
 
-Requires one index.html at site root, with no others permitted."""
+Requires one index.html at site root as home page, no other index.html permitted.
+
+Pages in a sub-directory require intermediate .html files of the same name at
+the same level as the sub-directory. Example: news/current/national.html
+requires news.html, and news/current.html"""
 
     parser.epilog = 'CAUTION: program does not delete files between runs.'
 
