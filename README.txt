@@ -41,7 +41,7 @@ internal 'page_id':
 Requires one index.html at site root as home page, no other index.html permitted.
 
 Pages in a sub-directory require intermediate .html files of the same name at
-the same level as the sub-directory (news.
+the same level as the sub-directory. Example: news/current/national.html requires news.html, and news/current.html
 
 TODOs:
  - Remove Jinja2 dependency
